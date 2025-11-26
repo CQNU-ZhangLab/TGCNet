@@ -2,7 +2,7 @@
 #### *by: Nana Liu* ,wei Hu,Wenfeng Zhang
 
 ## About
-![TGCNet Architecture](misc/all.png)
+![TGCNet Architecture](misc/fig1-0.png)
 Our proposed model, TGCNet, is a deep learning framework for ECG arrhythmia classification.
 
 
