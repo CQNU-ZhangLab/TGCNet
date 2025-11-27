@@ -7,7 +7,7 @@ Our proposed model, TGCNet, is a deep learning framework for ECG arrhythmia clas
 
 
 ## Datasets
-We used three public datasets in this study (Download our preprocessed version of the datasets from [zenodo](https://doi.org/10.5072/zenodo.213286)):
+We used three public datasets in this study :
 - [MIT-BIH](https://www.physionet.org/content/mitdb/1.0.0/)
 - [PTB](https://physionet.org/content/ptbdb/1.0.0/)
 - [Physionet2017](https://www.physionet.org/content/challenge-2017/1.0.0/)
