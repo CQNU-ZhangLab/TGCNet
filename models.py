@@ -108,23 +108,22 @@ class StackedBiLSTM(nn.Module):
         self.bilstm = nn.LSTM(input_dim, hidden_dim, num_layers=num_layers, batch_first=True, bidirectional=True)
 
     def forward(self, x):
-        # 强制将LSTM权重调整为连续的内存块
         self.bilstm.flatten_parameters()
 
-        # 打印LSTM输入形状
+        
         # print(f"LSTM input shape: {x.shape}")
 
         out, _ = self.bilstm(x)
 
-        # 打印LSTM输出形状
+        
         # print(f"LSTM output shape: {out.shape}")
 
         return out
 
-# TSB Module
-class TSB(nn.Module):
+# GBTE Module
+class GBTE(nn.Module):
     def __init__(self, input_dim, hidden_dim, num_layers, heads, output_dim):
-        super(TSB, self).__init__()
+        super(GBTE, self).__init__()
 
         self.encoder_bilstm = StackedBiLSTM(input_dim, hidden_dim, num_layers)
         self.decoder_bilstm = StackedBiLSTM(hidden_dim * 2, hidden_dim, num_layers)
@@ -164,14 +163,14 @@ class TGCNet(nn.Module):
         )
         self.dropout = nn.Dropout(0.2)
 
-        # Replace Transformer with TSB
-        self.tsb = TSB(input_dim=hparams["feature_dim"], hidden_dim=hparams["feature_dim"], num_layers=2, heads=8,
+       
+        self.gbte = GBTE(input_dim=hparams["feature_dim"], hidden_dim=hparams["feature_dim"], num_layers=2, heads=8,
                        output_dim=hparams["feature_dim"])
 
         self.crm = self._make_layer(SEBasicBlock, hparams["feature_dim"], 3)
         self.aap = nn.AdaptiveAvgPool1d(1)
 
-        # 更新线性层的输入尺寸，使其匹配池化后的特征维度
+        
         self.clf = nn.Linear(94, configs.num_classes)
 
     def _make_layer(self, block, planes, blocks, stride=1):
@@ -189,15 +188,15 @@ class TGCNet(nn.Module):
         x = self.dropout(x)
         x = self.conv_block2(x)
 
-        # TSB (replaces Transformer)
-        x = x.permute(0, 2, 1)  # Adjust for TSB input
-        x = self.tsb(x, x)  # Using src and tgt both as x
+        # GBTE (replaces Transformer)
+        x = x.permute(0, 2, 1) 
+        x = self.gbte(x, x)  
         x = x.permute(0, 2, 1)
 
         x = self.crm(x).permute(0, 2, 1)
         x = self.aap(x)
 
-        x_flat = x.view(x.size(0), -1)  # 确保 x_flat 的形状为 (batch_size, feature_dim)
+        x_flat = x.view(x.size(0), -1) 
         x_out = self.clf(x_flat)
         return x_out
 
