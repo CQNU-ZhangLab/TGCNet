@@ -13,7 +13,7 @@ parser.add_argument('--experiment_description', default='py2017-epoch-all-200', 
 parser.add_argument('--run_description',        default='run1',     type=str, help='run name')
 
 # ========= Select the DATASET ==============
-parser.add_argument('--dataset',                default='py2017',           type=str, help='mit, ptb')
+parser.add_argument('--dataset',                default='mit',           type=str, help='py2017, ptb')
 parser.add_argument('--seed_id',                default=     '1'  ,  type=str, help='to fix a seed while training')
 
 parser.add_argument('--data_path',              default=r'./dataset',           type=str,   help='Path containing dataset')
