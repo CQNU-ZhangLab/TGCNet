@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.manifold import TSNE
 from sklearn.preprocessing import LabelEncoder
 from utils import to_device  # Assume this is in your utils
-from models import ecgTransForm
+from models import TGCNet
 import os
 from matplotlib.colors import ListedColormap
 
@@ -101,7 +101,7 @@ def run_tsne_visualization():
     test_dl, _, _, _ = data_generator(data_path, dataset, hparams, test_subset=True)
 
     # Create model instance and load the saved state_dict
-    model = ecgTransForm(configs=dataset_configs, hparams=hparams)
+    model = TGCNet(configs=dataset_configs, hparams=hparams)
     model.load_state_dict(checkpoint["model"])
 
     # Set device (ensure it matches your training device)
